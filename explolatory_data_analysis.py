@@ -1,5 +1,6 @@
 import pandas as pd
 from matplotlib import pyplot as plt
+import seaborn as sns
 
 # contained all the car information
 filename = 'clean_df.csv'
@@ -24,4 +25,8 @@ df_grp = df_test.groupby(['drive-wheels', 'body-type'], as_index=False).mean()
 # print(df_grp)
 # using pivot for readability
 df_pivot = df_grp.pivot(index='drive-wheels', columns='body-type')
-print(df_pivot)
+
+
+# create heat map
+ax = sns.heatmap(df_pivot, annot=True)
+plt.show()
