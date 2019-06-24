@@ -88,7 +88,22 @@ df['horsepower-binned'] = pd.cut(df['horsepower'], bins, labels=group_names, inc
 print(df["horsepower-binned"].value_counts())
 
 plt.bar(group_names, df["horsepower-binned"].value_counts())
-plt.show()
+# plt.show()
 
-# Normally, a histogram is used to visualize the distribution of bins we created above.
-a = (0, 1, 2)
+# Indicator variable (or dummy variable) for fuel
+dummy_fuel_variable = pd.get_dummies(df["fuel-type"])
+print(dummy_fuel_variable.head())
+
+# change column names to clafify
+dummy_fuel_variable.rename(columns={'gas': 'fuel-type-gas', 'diesel': 'fuel-type-diasel'}, inplace=True)
+print(dummy_fuel_variable.head())
+
+# merge data frame "df" and "dummy_fuel_variable"
+df = pd.concat([df, dummy_fuel_variable], axis=1)
+
+# drop original column "fuel-type" from "df"
+df.drop("fuel-type", axis=1, inplace=True)
+
+print(df.head())
+
+df.to_csv('clean_df.csv')
