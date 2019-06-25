@@ -1,6 +1,6 @@
 import pandas as pd
 from matplotlib import pyplot as plt
-import seaborn as sns
+import numpy as np
 
 # contained all the car information
 filename = 'clean_df.csv'
@@ -28,5 +28,23 @@ df_pivot = df_grp.pivot(index='drive-wheels', columns='body-type')
 
 
 # create heat map
-ax = sns.heatmap(df_pivot, annot=True)
+fig, ax = plt.subplots()
+im = ax.pcolor(df_pivot, cmap='RdBu')
+
+# label names
+row_labels = df_pivot.columns.levels[1]
+col_labels = df_pivot.index
+
+# move ticks and labels to the center
+ax.set_xticks(np.arange(df_pivot.shape[1]) + 0.5, minor=False)
+ax.set_yticks(np.arange(df_pivot.shape[0]) + 0.5, minor=False)
+
+# insert labels
+ax.set_xticklabels(row_labels, minor=False)
+ax.set_yticklabels(col_labels, minor=False)
+
+# rotate label if too long
+plt.xticks(rotation=90)
+
+fig.colorbar(im)
 plt.show()
